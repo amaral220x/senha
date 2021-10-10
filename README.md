@@ -11,7 +11,7 @@ Funções:
 
 O jogo conta com a função main, funções de bibliotecas externas e funções criadas para o jogo. São elas:
 
-## int verificar_intervalo(char c[6])
+#### int verificar_intervalo(char c[6])
 
 Essa função recebe um vetor de char, que é a entrada do teclado, as tentativas. Nela testamos se a tentativa possui mais de 4 digitos ou digitos fora do intervalos correto: 1 a 7 seguindo a tabela ASCII.
 		
