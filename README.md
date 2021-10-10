@@ -6,7 +6,7 @@ O jogador tenta uma senha e o programa responde com pinos pretos, brancos ou esp
 
 Entrada:
 	As tentativas são armazenadas no vetor de char tentativa que possui 6 caracteres disponiveis. Como os valores são char, então precisamos de 4 casas para os números, 1 casa para o caractere \0 que indica fim da string e mais uma para armazenar algo a mais que o usuario digitar, pois se ele digitar mais de 4 caracteres iremos pedir uma entrada valida. (veja função [verificar_intervalo](#int-verificar_intervalo(char-c[6])))
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 Funções:
 
 O jogo conta com a função main, funções de bibliotecas externas e funções criadas para o jogo. São elas:
