@@ -5,7 +5,7 @@
 #include<stdlib.h>
 
 /*--- Funções ---*/
-int verificar_intervalo(char c[6]);
+int validar_tentativa(char c[6]);
 void gerar_senha(int * senha);
 void clear(void);
 void comparar(char * tentativa, int * senha, int *resposta);
@@ -28,12 +28,7 @@ int main(void){
             fgets(tentativa, 6, stdin);
             printf("**Tecle enter para continuar**");
             clear();
-            for(i = 0; i < strlen(tentativa); i++){
-                if(tentativa[i]=='\n'){
-                    tentativa[i]='\0';
-                }
-            }
-            if(!verificar_intervalo(tentativa)){
+            if(!validar_tentativa(tentativa)){
                 break;
             }
         }
@@ -49,12 +44,19 @@ int main(void){
     } 
 }
 
-int verificar_intervalo(char c[6]){
+int validar_tentativa(char c[6]){
     /*Verifica se todos os dígitos estão no intervalo correto e se a tentativa tem tamanho válido*/
     int i;
-    if((strlen(c))>4){
+    if((strlen(c))>5){
         printf("Tamanho invalido. Digite somente 4 digitos: ");
         return 1;
+    }
+    else{
+        for(i = 0; i < strlen(c); i++){
+                if(c[i]=='\n'){
+                    c[i]='\0';
+                }
+            }
     }
     for(i = 0; i<4; i++){
         if(c[i]<'1'||c[i]>'7'){ 
