@@ -47,7 +47,7 @@ int main(void){
 int validar_tentativa(char c[6]){
     /*Verifica se todos os dígitos estão no intervalo correto e se a tentativa tem tamanho válido*/
     int i;
-    if((strlen(c))>5){
+    if((strlen(c))!=5){
         printf("Tamanho invalido. Digite somente 4 digitos: ");
         return 1;
     }
