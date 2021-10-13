@@ -3,41 +3,42 @@
 #include<math.h>
 #include<time.h>
 #include<stdlib.h>
-char keyboard[BUFSIZ]; 
+
 /*--- Funções ---*/
 int validar_tentativa(char c[6]);
 void gerar_senha(int * senha);
-void clear(void);
 void comparar(char * tentativa, int * senha, int *resposta);
 
+char keyboard[BUFSIZ]; /*Variável usada pra limpar o buffer de entrada*/ 
 
 int main(void){
+    /*--- Declaração de variáveis ---*/
     char tentativa[6], c;
     int senha[4], resposta[3], rodadas=0;
     int i = 0;
-    gerar_senha(senha);
+    gerar_senha(senha); /*Gerando a senha*/
+    /*--- Início do jogo ---*/
     while(1){
-        printf("\n%d",rodadas);
         rodadas++;
         if(rodadas == 11){
-            printf("\nVocê perdeu!\n");
+            puts("Você perdeu!");
             return 0;
         }
-        printf("\n");
-        while(1){ /*Loop para verificar entrada*/
-            puts("tentativa");
+        printf("Rodada %d.\n",rodadas);
+        puts("Insira sua tentativa.");
+        while(1){ /*Loop para verificar entrada, terminará quando a entrada for válida*/
             fgets(tentativa, 6, stdin);
-            setbuf(stdin,keyboard);
-            if(!validar_tentativa(tentativa)){
+            setbuf(stdin,keyboard);/*Limpando o buffer de entrada*/
+            if(!validar_tentativa(tentativa)){ /*Validando a tentativa, se validar vai entrar nesse if e quebrar o laço while*/
                 break;
             }
         }
-        printf("\nTentativa = %s\n", tentativa);
-        comparar(tentativa, senha, resposta);
-        printf("\nPinos Brancos = %d", resposta[0]);
-        printf("\nPinos Pretos = %d", resposta[1]);
-        printf("\nVazio = %d", resposta[2]);
-        if(resposta[1] == 4){
+        //printf("Tentativa = %s\n", tentativa);
+        comparar(tentativa, senha, resposta);/*Compara a entrada com a senha.*/
+        printf("Pinos Brancos = %d", resposta[0]);/*Imprime os pinos brancos*/
+        printf("Pinos Pretos = %d", resposta[1]);/*Imprime os pinos pretos*/
+        printf("Vazio = %d", resposta[2]);/*Imprime os espaços vazios*/
+        if(resposta[1] == 4){ /*Se todos os pinos forem pretos*/
             printf("\nVocê venceu!!");
             return 0;
         }
@@ -108,8 +109,4 @@ void comparar(char * tentativa, int * senha, int *resposta){
     resposta[0] = brancos;
     resposta[1] = pretos;
     resposta[2] = 4 - resposta[0] - resposta[1];
-}
-
-void clear (void){    
-    while (getchar() != '\n' );
 }
