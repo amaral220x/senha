@@ -3,7 +3,6 @@
 #include<math.h>
 #include<time.h>
 #include<stdlib.h>
-//char keyboard[BUFSIZ];
 
 typedef struct _RODADAS{
     char tentativa[4];
@@ -31,16 +30,17 @@ int main(void){
     while(1){
         rodadas++;
         if(rodadas == 11){
-            //printf("%d%d%d%d",senha[0],senha[1],senha[2],senha[3]);
             tabuleiro(resposta, rodadass, rodadas, senha);
-            puts("\n\t\t\tVocê perdeu!");
+            puts("\n\t\t\tVocê perdeu!\n");
             return 0;
         }
         //printf("\n");
-        printf("Digite a sua %dª tentativa.\n", rodadas);
+        printf("\tDigite a sua %dª tentativa.\n", rodadas);
+        printf("\t");
         while(1){ /*Loop para verificar entrada*/
             fgets(tentativa, 6, stdin);
-            printf("**Tecle enter para continuar**\n");
+            printf("\t**Tecle enter para continuar**\n");
+            printf("\t");
             setbuf(stdin, NULL);
             limpar();
             if(!validar_tentativa(tentativa)){
@@ -57,11 +57,7 @@ int main(void){
             rodadass[rodadas-1].resposta[i-4] = resposta[i-4];
         }
         tabuleiro(resposta, rodadass, rodadas, senha);
-        //printf("\nPinos Brancos = %d", resposta[0]);
-        //printf("\nPinos Pretos = %d", resposta[1]);
-        //printf("\nVazio = %d", resposta[2]);
         if(rodadass[rodadas-1].resposta[1] == 4){
-            //printf("%d%d%d%d",senha[0],senha[1],senha[2],senha[3]);
             puts("\n\t\t\tVocê venceu!\n");
             return 0;
         }
@@ -77,19 +73,19 @@ int validar_tentativa(char c[6]){
         }
     }
     if((strlen(c))>4||strlen(c)<4){
-        printf("Tamanho invalido. Digite somente 4 digitos: ");
+        printf("\tTamanho invalido. Digite somente 4 digitos: ");
         return 1;
     }
     for(i = 0; i<4; i++){
         if(c[i]<'1'||c[i]>'7'){ 
-            printf("Algum numero esta fora do intervalo. Digite valores validos: ");
+            printf("\tAlgum numero esta fora do intervalo. Digite valores validos: ");
             return 1; /*tentativa inválida*/
         }
     }
     for(i=0; i<4; i++){
         for(j=i+1; j<4; j++){
             if(c[i]==c[j]){
-                printf("Nao repita numeros, por favor: ");
+                printf("\tNao repita numeros, por favor: ");
                 return 1;
             }
         }
@@ -150,11 +146,12 @@ void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int *s
     }
     if(rodadas == 11) rodadas--;
     printf("\t\t\t\t\t\tbrancos\tpretos\n");
+    printf("\t+-------------------------------------------------+\n");
     for(i = 0; i < rodadas; i++){
-        printf("\t#%.2d\t", i+1);        
-        printf("%c\t%c\t%c\t%c\t| %d\t%d\n", rodadass[i].tentativa[0], rodadass[i].tentativa[1], rodadass[i].tentativa[2], rodadass[i].tentativa[3], rodadass[i].resposta[0], rodadass[i].resposta[1]);
-          
+        printf("\t|#%.2d|\t", i+1);
+        printf("%c\t%c\t%c\t%c\t| %d  |  %d |\n", rodadass[i].tentativa[0], rodadass[i].tentativa[1], rodadass[i].tentativa[2], rodadass[i].tentativa[3], rodadass[i].resposta[0], rodadass[i].resposta[1]);
     }
+    printf("\t+-------------------------------------------------+\n");
 
     printf("\n\n");
 
@@ -170,29 +167,28 @@ void exibir_senha(int n, int *senha){
 }
 
 void imprimir_inicio(void){
-    printf("      ___           ___           ___           ___           ___     \n");
-    printf("     /\\  \\         /\\  \\         /\\__\\         /\\__\\         /\\  \\    \n");
-    printf("    /::\\  \\       /::\\  \\       /::|  |       /:/  /        /::\\  \\   \n");
-    printf("   /:/\\ \\  \\     /:/\\:\\  \\     /:|:|  |      /:/__/        /:/\\:\\  \\  \n");
-    printf("  _\\:\\~\\ \\  \\   /::\\~\\:\\  \\   /:/|:|  |__   /::\\  \\ ___   /::\\~\\:\\  \\ \n");
-    printf(" /\\ \\:\\ \\ \\__\\ /:/\\:\\ \\:\\__\\ /:/ |:| /\\__\\ /:/\\:\\  /\\__\\ /:/\\:\\ \\:\\__\\ \n");
-    printf(" \\:\\ \\:\\ \\/__/ \\:\\~\\:\\ \\/__/ \\/__|:|/:/  / \\/__\\:\\/:/  / \\/__\\:\\/:/  /\n");
-    printf("  \\:\\ \\:\\__\\    \\:\\ \\:\\__\\       |:/:/  /       \\::/  /       \\::/  / \n");
-    printf("   \\:\\/:/  /     \\:\\ \\/__/       |::/  /        /:/  /        /:/  /  \n");
-    printf("    \\::/  /       \\:\\__\\         /:/  /        /:/  /        /:/  /   \n");
-    printf("     \\/__/         \\/__/         \\/__/         \\/__/         \\/__/    \n");
+    printf("\t      ___           ___           ___           ___           ___     \n");
+    printf("\t     /\\  \\         /\\  \\         /\\__\\         /\\__\\         /\\  \\    \n");
+    printf("\t    /::\\  \\       /::\\  \\       /::|  |       /:/  /        /::\\  \\   \n");
+    printf("\t   /:/\\ \\  \\     /:/\\:\\  \\     /:|:|  |      /:/__/        /:/\\:\\  \\  \n");
+    printf("\t  _\\:\\~\\ \\  \\   /::\\~\\:\\  \\   /:/|:|  |__   /::\\  \\ ___   /::\\~\\:\\  \\ \n");
+    printf("\t /\\ \\:\\ \\ \\__\\ /:/\\:\\ \\:\\__\\ /:/ |:| /\\__\\ /:/\\:\\  /\\__\\ /:/\\:\\ \\:\\__\\ \n");
+    printf("\t \\:\\ \\:\\ \\/__/ \\:\\~\\:\\ \\/__/ \\/__|:|/:/  / \\/__\\:\\/:/  / \\/__\\:\\/:/  /\n");
+    printf("\t  \\:\\ \\:\\__\\    \\:\\ \\:\\__\\       |:/:/  /       \\::/  /       \\::/  / \n");
+    printf("\t   \\:\\/:/  /     \\:\\ \\/__/       |::/  /        /:/  /        /:/  /  \n");
+    printf("\t    \\::/  /       \\:\\__\\         /:/  /        /:/  /        /:/  /   \n");
+    printf("\t     \\/__/         \\/__/         \\/__/         \\/__/         \\/__/    \n");
     printf("\n\n");
 
-    printf("+----------------------------------------------------------------------------------+\n");
-    printf("+------------------------------------ REGRAS --------------------------------------+\n");
-    printf("|\tO computador gera uma senha de quatro digitos diferentes, de 1 a 7.\t   |\n");
-    printf("|\tO jogador tem 10 chances para adivinhar a senha gerada. Ao realizar\t   |\n");
-    printf("|\tuma tentativa o computador retornara a quantidade de pinos pretos e\t   |\n");
-    printf("|\tpinos brancos. Os pinos pretos indicam numero certo na posicao certa\t   |\n");
-    printf("|\te os pinos brancos indicam numero certo na posicao errada. Nao eh dito\t   |\n");
-    printf("|\tquais sao os numeros, cabe ao jogador descobrir. Ao esgotar o numero\t   |\n");
-    printf("|\tde tentativas o computador revelara a senha.\t\t\t\t   |\n");
-    printf("+----------------------------------------------------------------------------------+\n");
+    printf("\t+------------------------------------ REGRAS --------------------------------------+\n");
+    printf("\t|\tO computador gera uma senha de quatro digitos diferentes, de 1 a 7.\t   |\n");
+    printf("\t|\tO jogador tem 10 chances para adivinhar a senha gerada. Ao realizar\t   |\n");
+    printf("\t|\tuma tentativa o computador retornara a quantidade de pinos pretos e\t   |\n");
+    printf("\t|\tpinos brancos. Os pinos pretos indicam numero certo na posicao certa\t   |\n");
+    printf("\t|\te os pinos brancos indicam numero certo na posicao errada. Nao eh dito\t   |\n");
+    printf("\t|\tquais sao os numeros, cabe ao jogador descobrir. Ao esgotar o numero\t   |\n");
+    printf("\t|\tde tentativas o computador revelara a senha.\t\t\t\t   |\n");
+    printf("\t+----------------------------------------------------------------------------------+\n");
     printf("\n\n");
 
 }
