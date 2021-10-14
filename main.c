@@ -13,11 +13,11 @@ typedef struct _RODADAS{
 /*--- Funções ---*/
 int validar_tentativa(char c[6]);
 void gerar_senha(int * senha);
-void clear(void);
+void limpar(void);
 void comparar(char * tentativa, int * senha, int *resposta);
 void tabuleiro(char *tentativa, int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int * senha);
 void exibir_senha(int n, int *senha);
-void imprimir_inicio();
+void imprimir_inicio(void);
 
 
 int main(void){
@@ -42,7 +42,7 @@ int main(void){
             fgets(tentativa, 6, stdin);
             printf("**Tecle enter para continuar**\n");
             setbuf(stdin, NULL);
-            clear();
+            limpar();
             if(!validar_tentativa(tentativa)){
                 break;
             }
@@ -134,7 +134,7 @@ void comparar(char * tentativa, int * senha, int *resposta){
     resposta[2] = 4 - resposta[0] - resposta[1];
 }
 
-void clear (void){    
+void limpar (void){    
     while (getchar() != '\n' );
 }
 
@@ -168,7 +168,7 @@ void exibir_senha(int n, int *senha){
     }
 }
 
-void imprimir_inicio(){
+void imprimir_inicio(void){
     printf("      ___           ___           ___           ___           ___     \n");
     printf("     /\\  \\         /\\  \\         /\\__\\         /\\__\\         /\\  \\    \n");
     printf("    /::\\  \\       /::\\  \\       /::|  |       /:/  /        /::\\  \\   \n");
