@@ -15,7 +15,7 @@ int validar_tentativa(char c[6]);
 void gerar_senha(int * senha);
 void limpar(void);
 void comparar(char * tentativa, int * senha, int *resposta);
-void tabuleiro(char *tentativa, int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int * senha);
+void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int * senha);
 void exibir_senha(int n, int *senha);
 void imprimir_inicio(void);
 
@@ -32,7 +32,7 @@ int main(void){
         rodadas++;
         if(rodadas == 11){
             //printf("%d%d%d%d",senha[0],senha[1],senha[2],senha[3]);
-            tabuleiro(tentativa, resposta, rodadass, rodadas, senha);
+            tabuleiro(resposta, rodadass, rodadas, senha);
             puts("\n\t\t\tVocê perdeu!");
             return 0;
         }
@@ -56,7 +56,7 @@ int main(void){
             }
             rodadass[rodadas-1].resposta[i-4] = resposta[i-4];
         }
-        tabuleiro(tentativa, resposta, rodadass, rodadas, senha);
+        tabuleiro(resposta, rodadass, rodadas, senha);
         //printf("\nPinos Brancos = %d", resposta[0]);
         //printf("\nPinos Pretos = %d", resposta[1]);
         //printf("\nVazio = %d", resposta[2]);
@@ -138,9 +138,9 @@ void limpar (void){
     while (getchar() != '\n' );
 }
 
-void tabuleiro(char *tentativa, int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int *senha){
+void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int *senha){
     /* Imprime o tabuleiro com as tentativas anteriores */
-    printf("\e[1;1H\e[2J");
+    system("clear");
     int i;
     if(rodadass[rodadas-1].resposta[1]==4||rodadas == 11){
         exibir_senha(1, senha);
@@ -159,6 +159,7 @@ void tabuleiro(char *tentativa, int *resposta, RODADAS_ANTERIORES * rodadass, in
     printf("\n\n");
 
 }
+
 void exibir_senha(int n, int *senha){
     if(n){
         printf("\n\t\t\tSENHA: %d %d %d %d\t\t   pinos\t\n", senha[0], senha[1], senha[2], senha[3]);
