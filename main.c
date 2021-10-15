@@ -14,51 +14,85 @@ int validar_tentativa(char c[6]);
 void gerar_senha(int * senha);
 void limpar(void);
 void comparar(char * tentativa, int * senha, int *resposta);
-void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int * senha);
+void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadas_anteriores, int rodadas, int * senha);
 void exibir_senha(int n, int *senha);
 void imprimir_inicio(void);
+void limpaTela(void);
 
 
 int main(void){
-    char tentativa[6], c;
-    int senha[4] = {1,2,3,4}, resposta[3], rodadas=0, matriz_respostas[10][6];
+    char tentativa[5];
+    int senha[4] = {1,2,3,4}, resposta[3], rodadas=0;
     int i = 0;
-    RODADAS_ANTERIORES rodadass[10];
+    RODADAS_ANTERIORES rodadas_anteriores[10];
+    limpaTela();
     gerar_senha(senha);
     imprimir_inicio();
 
     while(1){
         rodadas++;
         if(rodadas == 11){
-            tabuleiro(resposta, rodadass, rodadas, senha);
-            puts("\n\t\t\tVocê perdeu!\n");
+            tabuleiro(resposta, rodadas_anteriores, rodadas, senha);
+            puts("\n\t\t\tVoce perdeu!\n");
             return 0;
         }
-        //printf("\n");
-        printf("\tDigite a sua %dª tentativa.\n", rodadas);
+        printf("\tDigite a sua %da tentativa.\n", rodadas);
         printf("\t");
-        while(1){ /*Loop para verificar entrada*/
-            fgets(tentativa, 6, stdin);
-            printf("\t**Tecle enter para continuar**\n");
-            printf("\t");
-            setbuf(stdin, NULL);
-            limpar();
-            if(!validar_tentativa(tentativa)){
+
+        /*Loop para verificar a entrada*/
+        while(1) {
+            /* Cada tentativa de senha vai ser um loop de getchar() */
+            int j = 0;
+            while(1) {
+            int c = getchar();
+            /* Se chegamos em um \n, o usuário está submetendo uma senha */
+            if(c == '\n') {
+                /* Coloca um final na string */
+                tentativa[j] = '\0';
+                /* Sai do loop */
                 break;
             }
+            /* Se não foi um \n, o usuário submeteu um dígito */
+            /* Salva esse dígito na string */
+            tentativa[j] = c;
+            /* Se chegamos ao tamanho limite da senha */
+            if(j >= 4) {
+                /* Termina a string com \0*/
+                tentativa[4] = '\0';
+                /* Se o último caractere não foi \n */
+                if(c != '\n') {
+                /* Então o usuário digitou mais que 4 dígitos */
+                /* Limpa o buffer */
+                limpar();
+                /* Avisa que não pode*/
+                printf("\tDigite apenas 4 digitos, por favor:\n\t");
+                /* Reinicia a contagem de caracteres lidos */
+                j = 0;
+                continue;
+                } else {
+                /* Se o último caractere foi \n, não precisa mais ler nada */
+                break;
+                }
+            }
+            /* Vai pra leitura do próximo caractere */
+            j++;
+            }
+
+            if(!validar_tentativa(tentativa))
+            break;
         }
         printf("\nTentativa = %s\n", tentativa);
         comparar(tentativa, senha, resposta);
         for(i = 0; i<7; i++){
             if(i<4){
-                rodadass[rodadas-1].tentativa[i] = tentativa[i];
+                rodadas_anteriores[rodadas-1].tentativa[i] = tentativa[i];
                 continue;
             }
-            rodadass[rodadas-1].resposta[i-4] = resposta[i-4];
+            rodadas_anteriores[rodadas-1].resposta[i-4] = resposta[i-4];
         }
-        tabuleiro(resposta, rodadass, rodadas, senha);
-        if(rodadass[rodadas-1].resposta[1] == 4){
-            puts("\n\t\t\tVocê venceu!\n");
+        tabuleiro(resposta, rodadas_anteriores, rodadas, senha);
+        if(rodadas_anteriores[rodadas-1].resposta[1] == 4){
+            puts("\n\t\t\tVoce venceu!\n");
             return 0;
         }
     } 
@@ -72,20 +106,17 @@ int validar_tentativa(char c[6]){
             c[i]='\0';
         }
     }
-    if((strlen(c))>4||strlen(c)<4){
-        printf("\tTamanho invalido. Digite somente 4 digitos: ");
-        return 1;
-    }
+
     for(i = 0; i<4; i++){
         if(c[i]<'1'||c[i]>'7'){ 
-            printf("\tAlgum numero esta fora do intervalo. Digite valores validos: ");
+            printf("\tAlgum caracter esta fora do intervalo. Apenas numeros de 1 a 7, sem repeticoes, sao aceitos:\n\t");
             return 1; /*tentativa inválida*/
         }
     }
     for(i=0; i<4; i++){
         for(j=i+1; j<4; j++){
             if(c[i]==c[j]){
-                printf("\tNao repita numeros, por favor: ");
+                printf("\tNao repita numeros, por favor:\n\t");
                 return 1;
             }
         }
@@ -96,8 +127,8 @@ int validar_tentativa(char c[6]){
 
 void gerar_senha(int * senha){
     /*Gera uma senha aleatória sem dígitos repetidos*/
-    srand(time(NULL));
     int i, j;
+    srand(time(NULL));
     for(i = 0; i < 4; i++){
         senha[i] = (rand()%7) + 1;
         for(j=0; j<i;j++){
@@ -109,7 +140,7 @@ void gerar_senha(int * senha){
 }
 
 void comparar(char * tentativa, int * senha, int *resposta){
-    int i = 0, j = 0, pretos=0, brancos=0, nada=0;
+    int i = 0, j = 0, pretos=0, brancos=0;
     for(i=0; i<4; i++){
         for(j=0; j<4; j++){
             if(tentativa[i]==senha[j] + '0'){
@@ -118,7 +149,7 @@ void comparar(char * tentativa, int * senha, int *resposta){
         }
     }
     
-    for (i = 0; i < 4; i++){ // Preencher com 1
+    for (i = 0; i < 4; i++){ /* Preencher com 1*/
         char c = senha[i]+'0';
         if(tentativa[i] ==c){
             brancos--;
@@ -130,15 +161,16 @@ void comparar(char * tentativa, int * senha, int *resposta){
     resposta[2] = 4 - resposta[0] - resposta[1];
 }
 
-void limpar (void){    
-    while (getchar() != '\n' );
+void limpar(void){    
+    int c = 0;    
+    while (getchar() != '\n' && c != EOF) {};
 }
 
-void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int *senha){
+void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadas_anteriores, int rodadas, int *senha){
     /* Imprime o tabuleiro com as tentativas anteriores */
-    system("clear");
     int i;
-    if(rodadass[rodadas-1].resposta[1]==4||rodadas == 11){
+    limpaTela();
+    if(rodadas_anteriores[rodadas-1].resposta[1]==4||rodadas == 11){
         exibir_senha(1, senha);
     }
     else{
@@ -146,12 +178,12 @@ void tabuleiro(int *resposta, RODADAS_ANTERIORES * rodadass, int rodadas, int *s
     }
     if(rodadas == 11) rodadas--;
     printf("\t\t\t\t\t\tbrancos\tpretos\n");
-    printf("\t+-------------------------------------------------+\n");
+    printf("\t+--------------------------------------------------+\n");
     for(i = 0; i < rodadas; i++){
         printf("\t|#%.2d|\t", i+1);
-        printf("%c\t%c\t%c\t%c\t| %d  |  %d |\n", rodadass[i].tentativa[0], rodadass[i].tentativa[1], rodadass[i].tentativa[2], rodadass[i].tentativa[3], rodadass[i].resposta[0], rodadass[i].resposta[1]);
+        printf("%c\t%c\t%c\t%c\t  | %d  | %d |\n", rodadas_anteriores[i].tentativa[0], rodadas_anteriores[i].tentativa[1], rodadas_anteriores[i].tentativa[2], rodadas_anteriores[i].tentativa[3], rodadas_anteriores[i].resposta[0], rodadas_anteriores[i].resposta[1]);
     }
-    printf("\t+-------------------------------------------------+\n");
+    printf("\t+--------------------------------------------------+\n");
 
     printf("\n\n");
 
@@ -191,4 +223,12 @@ void imprimir_inicio(void){
     printf("\t+----------------------------------------------------------------------------------+\n");
     printf("\n\n");
 
+}
+
+void limpaTela(){
+     #if defined(_WIN32) || defined(_WIN64)
+        system("cls");
+    #elif defined(__linux__) || defined(__unix__)
+        system("clear");
+    #endif
 }
